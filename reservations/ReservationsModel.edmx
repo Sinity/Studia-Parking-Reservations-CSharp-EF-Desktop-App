@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ReservationsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ReservationsModelStoreContainer">
+    <EntitySet Name="Reservations" EntityType="ReservationsModel.Store.Reservations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ReservationSlots" EntityType="ReservationsModel.Store.ReservationSlots" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ParkingPlaces" EntityType="ReservationsModel.Store.ParkingPlaces" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parkings" EntityType="ReservationsModel.Store.Parkings" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ReservationReservationSlot" Association="ReservationsModel.Store.ReservationReservationSlot">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="ReservationSlot" EntitySet="ReservationSlots" />
+    </AssociationSet>
+    <AssociationSet Name="ParkingPlaceReservation" Association="ReservationsModel.Store.ParkingPlaceReservation">
+      <End Role="ParkingPlace" EntitySet="ParkingPlaces" />
+      <End Role="ReservationSlot" EntitySet="ReservationSlots" />
+    </AssociationSet>
+    <AssociationSet Name="ParkingParkingPlace" Association="ReservationsModel.Store.ParkingParkingPlace">
+      <End Role="Parking" EntitySet="Parkings" />
+      <End Role="ParkingPlace" EntitySet="ParkingPlaces" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Reservations">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TimeOfReservation" Type="datetime" Nullable="false" />
+    <Property Name="RegistrationNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Token" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReservationSlots">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParkingPlaceID" Type="int" Nullable="false" />
+    <Property Name="TimeFrom" Type="datetime" Nullable="false" />
+    <Property Name="TimeTo" Type="datetime" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" />
+    <Property Name="ReservationID" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ParkingPlaces">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ParkingID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Parkings">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="ReservationReservationSlot">
+    <End Role="Reservation" Type="ReservationsModel.Store.Reservations" Multiplicity="0..1" />
+    <End Role="ReservationSlot" Type="ReservationsModel.Store.ReservationSlots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reservation">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReservationSlot">
+        <PropertyRef Name="ReservationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParkingPlaceReservation">
+    <End Role="ParkingPlace" Type="ReservationsModel.Store.ParkingPlaces" Multiplicity="1" />
+    <End Role="ReservationSlot" Type="ReservationsModel.Store.ReservationSlots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParkingPlace">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReservationSlot">
+        <PropertyRef Name="ParkingPlaceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParkingParkingPlace">
+    <End Role="Parking" Type="ReservationsModel.Store.Parkings" Multiplicity="1" />
+    <End Role="ParkingPlace" Type="ReservationsModel.Store.ParkingPlaces" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Parking">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ParkingPlace">
+        <PropertyRef Name="ParkingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ReservationsModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ReservationsModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Reservations" EntityType="ReservationsModel.Reservation" />
+          <EntitySet Name="ReservationSlots" EntityType="ReservationsModel.ReservationSlot" />
+          <EntitySet Name="ParkingPlaces" EntityType="ReservationsModel.ParkingPlace" />
+          <EntitySet Name="Parkings" EntityType="ReservationsModel.Parking" />
+          <AssociationSet Name="ReservationReservationSlot" Association="ReservationsModel.ReservationReservationSlot">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="ReservationSlot" EntitySet="ReservationSlots" />
+          </AssociationSet>
+          <AssociationSet Name="ParkingPlaceReservation" Association="ReservationsModel.ParkingPlaceReservation">
+            <End Role="ParkingPlace" EntitySet="ParkingPlaces" />
+            <End Role="ReservationSlot" EntitySet="ReservationSlots" />
+          </AssociationSet>
+          <AssociationSet Name="ParkingParkingPlace" Association="ReservationsModel.ParkingParkingPlace">
+            <End Role="Parking" EntitySet="Parkings" />
+            <End Role="ParkingPlace" EntitySet="ParkingPlaces" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeOfReservation" Type="DateTime" Nullable="false" />
+          <Property Name="RegistrationNumber" Type="String" Nullable="true" />
+          <Property Name="Token" Type="String" Nullable="false" />
+          <NavigationProperty Name="ReservationSlots" Relationship="ReservationsModel.ReservationReservationSlot" FromRole="Reservation" ToRole="ReservationSlot" />
+        </EntityType>
+        <EntityType Name="ReservationSlot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParkingPlaceID" Nullable="false" Type="Int32" />
+          <Property Name="TimeFrom" Type="DateTime" Nullable="false" />
+          <Property Name="TimeTo" Type="DateTime" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" />
+          <Property Name="ReservationID" Nullable="true" Type="Int32" />
+          <NavigationProperty Name="Reservation" Relationship="ReservationsModel.ReservationReservationSlot" FromRole="ReservationSlot" ToRole="Reservation" />
+          <NavigationProperty Name="ParkingPlace" Relationship="ReservationsModel.ParkingPlaceReservation" FromRole="ReservationSlot" ToRole="ParkingPlace" />
+        </EntityType>
+        <EntityType Name="ParkingPlace">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="ParkingID" Nullable="false" Type="Int32" />
+          <NavigationProperty Name="ReservationSlots" Relationship="ReservationsModel.ParkingPlaceReservation" FromRole="ParkingPlace" ToRole="ReservationSlot" />
+          <NavigationProperty Name="Parking" Relationship="ReservationsModel.ParkingParkingPlace" FromRole="ParkingPlace" ToRole="Parking" />
+        </EntityType>
+        <EntityType Name="Parking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="ParkingPlaces" Relationship="ReservationsModel.ParkingParkingPlace" FromRole="Parking" ToRole="ParkingPlace" />
+        </EntityType>
+        <Association Name="ReservationReservationSlot">
+          <End Type="ReservationsModel.Reservation" Role="Reservation" Multiplicity="0..1" />
+          <End Type="ReservationsModel.ReservationSlot" Role="ReservationSlot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reservation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReservationSlot">
+              <PropertyRef Name="ReservationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ParkingPlaceReservation">
+          <End Type="ReservationsModel.ParkingPlace" Role="ParkingPlace" Multiplicity="1" />
+          <End Type="ReservationsModel.ReservationSlot" Role="ReservationSlot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParkingPlace">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReservationSlot">
+              <PropertyRef Name="ParkingPlaceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ParkingParkingPlace">
+          <End Type="ReservationsModel.Parking" Role="Parking" Multiplicity="1" />
+          <End Type="ReservationsModel.ParkingPlace" Role="ParkingPlace" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parking">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ParkingPlace">
+              <PropertyRef Name="ParkingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ReservationsModelStoreContainer" CdmEntityContainer="ReservationsModelContainer">
+    <EntitySetMapping Name="Reservations">
+      <EntityTypeMapping TypeName="IsTypeOf(ReservationsModel.Reservation)">
+        <MappingFragment StoreEntitySet="Reservations">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TimeOfReservation" ColumnName="TimeOfReservation" />
+          <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReservationSlots">
+      <EntityTypeMapping TypeName="IsTypeOf(ReservationsModel.ReservationSlot)">
+        <MappingFragment StoreEntitySet="ReservationSlots">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ParkingPlaceID" ColumnName="ParkingPlaceID" />
+          <ScalarProperty Name="TimeFrom" ColumnName="TimeFrom" />
+          <ScalarProperty Name="TimeTo" ColumnName="TimeTo" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="ReservationID" ColumnName="ReservationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ParkingPlaces">
+      <EntityTypeMapping TypeName="IsTypeOf(ReservationsModel.ParkingPlace)">
+        <MappingFragment StoreEntitySet="ParkingPlaces">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ParkingID" ColumnName="ParkingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parkings">
+      <EntityTypeMapping TypeName="IsTypeOf(ReservationsModel.Parking)">
+        <MappingFragment StoreEntitySet="Parkings">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
